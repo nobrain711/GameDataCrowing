@@ -3,3 +3,7 @@ __pycache__/
 
 # Environments
 venv/
+
+# Test Code
+src/temp.html
+src/temp.py
