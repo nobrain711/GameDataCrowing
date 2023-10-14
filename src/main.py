@@ -33,18 +33,18 @@ def scroll(driver)->None:
     for _ in range(10):
         # moving scroll
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-        sleep(1)
+        sleep(3)
 
 # find all app button
 def click_button(driver)->None:
     button = driver.find_element("id","filter_app_type_all")
     button.click()
-    sleep(1)
+    sleep(3)
 
 # Going root page
 def root_page(driver):
     driver.get(PAGEROOT)
-    sleep(1)
+    sleep(3)
     return driver
 
 def go_page(driver, url:str):
@@ -57,7 +57,7 @@ def go_page(driver, url:str):
 def searching(driver)->str:
     input_tag = driver.find_element("id", "store_nav_search_term")
     input_tag.send_keys(GAMESCRICE)
-    sleep(1)
+    sleep(3)
 
     soup = get_Page_Source(driver)
     url = soup.find('a',{'class':'match match_creator match_v2 match_category_top ds_collapse_flag'})['href']
@@ -118,11 +118,12 @@ def get_game_info(soup):
 
 def go_game_page(driver, url:str):
     driver.get(url)
-    sleep(1)
-    select = Select(driver.find_element('id','ageYear'))
-    select.select_by_value('1980')
-    driver.find_element('id', 'view_product_page_btn').click()
-    sleep(3)   
+    sleep(3)
+    if Select(driver.find_element('id', 'ageYear') != None):
+        select = Select(driver.find_element('id','ageYear'))
+        select.select_by_value('1980')
+        driver.find_element('id', 'view_product_page_btn').click()
+        sleep(3)   
 
     return driver
 
@@ -144,17 +145,18 @@ def get_data(driver, url:str):
 
 # web driver
 driver = web.Firefox()
-sleep(1)
+sleep(3)
 
 driver = root_page(driver)
 url = searching(driver)
 driver = go_page(driver, url)
 page_list = find_url(driver)
 game_data = []
-for page in page_list:
-    temp = get_data(driver,page_list)
-    game_data.append(temp)
 
+for page in page_list:
+    temp = get_data(driver=driver,url=page_list)
+    game_data.append(temp)
+    
 driver.quit()
 
 df = pd.DataFrame(game_data)
