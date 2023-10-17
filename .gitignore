@@ -5,5 +5,5 @@ __pycache__/
 venv/
 
 # Test Code
-src/temp.html
-src/temp.py
+src/temp.*
+*.json
